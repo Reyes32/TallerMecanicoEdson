@@ -11,25 +11,48 @@
     </head>
     <body>
         <!--código que incluye el menú responsivo-->
-        <?php include'inc/incluye_menu.php' ?>
+        <?php
+        include'inc/incluye_menu.php';
+        include 'inc/conexion.php';
+        ?>
         <!--termina código que incluye el menú responsivo-->
         <div class="container">
             <div class="jumbotron">
-                <h1>Registrar un Proveedor</h1>
+                <?php
+                $sel = $con->prepare("SELECT proveedor_id, proveedor_nombre from PROVEEDOR");
+                $sel->execute();
+                $res = $sel->get_result();
+                ?>
+                <h1>Registrar una Sucursal</h1>
                 <form role="form" id="login-form" 
                       method="post" class="form-signin" 
-                      action="proveedor_guardar.php">
+                      action="sucursal_guardar.php">
                     <div class="h2">
-                        DATOS DEL PROVEEDOR
+                        DATOS DE LA SUCURSAL
                     </div>
                     <div class="form-group">
-                        <label for="nombre_del_proveedor">Nombre del Proveedor (requerido)</label>
-                        <input type="text" class="form-control" id="nombre_del_proveedor" name="nombre_del_proveedor"
-                               placeholder="Ingresa nombre del proveedor" style="text-transform:uppercase;" required>
+                        <label for="nombre_proveedor">Selecciona un proveedor (requerido)</label>
+                        <br>
+                        <select class="selectpicker" name="proveedor_id">
+                            <?php while ($f = $res->fetch_assoc()) { ?>
+                                <option value="<?php echo $f['proveedor_id'] ?>"><?php echo $f['proveedor_nombre'] ?>
+                                </option>
+                                <?php
+                            }
+                            $sel->close();
+                            $con->close();
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre_sucursal">Nombre de la Sucursal (requerido)</label>
+                        <input type="text" class="form-control" id="nombre_sucursal" name="nombre_sucursal"
+                               placeholder="Ingresa nombre de la sucursal" style="text-transform:uppercase;" required>
                     </div>
                     <div class="form-group">
                         <label>Direcci&oacute;n</label>
-                        <input type="text" class="form-control" id="direccion_del_proveedor" name="direccion_del_proveedor"
+                        <input type="text" class="form-control" id="direccion_sucursal" name="direccion_sucursal"
                                placeholder="Ingresa direcci&oacute;n (Tienda matriz)" style="text-transform:uppercase;">
                     </div>
 
@@ -44,9 +67,9 @@
                            placeholder="Ingresa segundo tel&eacute;fono" style="text-transform:uppercase;">
                     <br>
                     <div class="form-group">
-                        <label for="correo_proveedor">Correo electr&oacute;nico</label>
+                        <label for="correo_sucursal">Correo electr&oacute;nico</label>
 
-                        <input type="email" class="form-control" id="correo_proveedor" name="correo_proveedor"
+                        <input type="email" class="form-control" id="correo_sucursal" name="correo_sucursal"
                                placeholder="Ingresa correo electr&oacute;nico" style="text-transform:uppercase;">
                     </div>
                     <br>
@@ -58,4 +81,3 @@
 
     </body>
 </html>
-
